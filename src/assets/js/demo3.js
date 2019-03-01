@@ -12,9 +12,9 @@ const observeElement = (entries, observer) => {
 }
 
 elements.forEach((element) => {
-  const io = new IntersectionObserver(observeElement, {
+  const observer = new IntersectionObserver(observeElement, {
     root: parent,
     threshold: .5
   });
-  io.observe(element);
+  observer.observe(element);
 });

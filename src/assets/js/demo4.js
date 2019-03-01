@@ -14,6 +14,6 @@ const lazyImage = (entries, observer) => {
 }
 
 images.forEach((img) => {
-  const io = new IntersectionObserver(lazyImage);
-  io.observe(img);
+  const observer = new IntersectionObserver(lazyImage);
+  observer.observe(img);
 });

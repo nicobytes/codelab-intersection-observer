@@ -1,55 +1,114 @@
 
+![Imgur](https://i.imgur.com/Mn0ub91.png)
+
 # Master
 
-# 1-init
+All demos
 
-# 2-lazy-images
+# 1. Init
 
-```
-const images = document.querySelectorAll('img');
-
-images.forEach(lazyImages);
-```
+Init for project
 
 ```
-const images = document.querySelectorAll('img');
-
-images.forEach((img => {
-  console.log(img);
-}));
+npm run start
 ```
 
+# 2. Demo-1
+
 ```
-const images = document.querySelectorAll('img');
+const elements = document.querySelectorAll('#wrapper > div');
+const output = document.getElementById('output');
+const parent = document.getElementById('wrapper');
 
-const lazyImages = (img) => {
-  const io = new IntersectionObserver((entries, observer) => {
-    // code 
-  });
-
-  io.observe(img);
+const observeElement = (entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      const newText = `${entry.target.innerText} => ${entry.intersectionRatio}`
+      output.innerText = newText;
+    }
+  })
 }
-images.forEach(lazyImages);
+
+const observer = new IntersectionObserver(observeElement, {
+  root: parent,
+  threshold: 0
+});
+
+elements.forEach((element) => {
+  observer.observe(element);
+});
 ```
 
+# 3. Demo-2
 
+```
+const elements = document.querySelectorAll('#wrapper > div');
+const parent = document.getElementById('wrapper');
+
+const observeElement = (entries, observer) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+      console.log('load');
+    }
+  })
+}
+
+const observer = new IntersectionObserver(observeElement, {
+  root: parent,
+  threshold: .5
+});
+
+elements.forEach((element) => {
+  observer.observe(element);
+});
+```
+
+# 4. Demo-3
+
+```
+const elements = document.querySelectorAll('#wrapper > div');
+const parent = document.getElementById('wrapper');
+
+const observeElement = (entries, observer) => {
+  entries
+  .filter(entry => entry.isIntersecting)
+  .forEach((entry) => {
+    entry.target.classList.add('show');
+    console.log('load');
+    observer.disconnect();
+  })
+}
+
+elements.forEach((element) => {
+  const observer = new IntersectionObserver(observeElement, {
+    root: parent,
+    threshold: .5
+  });
+  observer.observe(element);
+});
+```
+
+# 5. Demo-4 Lazy Images
+
+```
 const images = document.querySelectorAll('img');
 
-const lazyImages = (img) => {
-  const io = new IntersectionObserver((entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const img = entry.target;
-        const src = img.getAttribute('data-lazy');
+const lazyImage = (entries, observer) => {
+  entries
+  .filter(entry => entry.isIntersecting)
+  .forEach((entry) => {
+    const img = entry.target;
+    const src = img.getAttribute('data-lazy');
 
-        img.setAttribute('src', src);
-        observer.disconnect();
-        console.log('load');
-      }
-    })
-  });
-
-  io.observe(img);
+    img.setAttribute('src', src);
+    observer.disconnect();
+    console.log('load');
+  })
 }
-images.forEach(lazyImages);
 
+images.forEach((img) => {
+  const observer = new IntersectionObserver(lazyImage);
+  observer.observe(img);
+});
+```

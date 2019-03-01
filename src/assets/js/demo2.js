@@ -10,11 +10,11 @@ const observeElement = (entries, observer) => {
   })
 }
 
-const io = new IntersectionObserver(observeElement, {
+const observer = new IntersectionObserver(observeElement, {
   root: parent,
   threshold: .5
 });
 
 elements.forEach((element) => {
-  io.observe(element);
+  observer.observe(element);
 });
